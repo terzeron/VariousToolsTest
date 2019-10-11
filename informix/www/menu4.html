@@ -1,0 +1,60 @@
+<html>
+<head><title>수강신청</title></head>
+<body bgcolor=white>
+
+<script language=javascript>
+menu1 = new Image();
+menu2 = new Image();
+menu3 = new Image();
+menu4 = new Image();
+menu1i = new Image();
+menu2i = new Image();
+menu3i = new Image();
+menu4i = new Image();
+
+menu1.src = "register.gif";
+menu2.src = "timetable.gif";
+menu3.src = "classinfo.gif";
+menu4.src = "status.gif";
+menu1i.src = "register-i.gif";
+menu2i.src = "timetable-i.gif";
+menu3i.src = "classinfo-i.gif";
+menu4i.src = "status-i.gif";
+</script>
+
+<p>&nbsp</p>
+<center>
+<table border=0>
+<tr>
+<td><a href=menu1.html onMouseOver="menu1.src=menu1i.src;window.status='수강신청';return true" onMouseOut="menu1.src='register.gif'"><img name=menu1 src=register.gif border=0></a><td>
+<td><p>&nbsp</p></td>
+<td><a href=menu2.html onMouseOver="menu2.src=menu2i.src;window.status='시간표';return true" onMouseOut="menu2.src='timetable.gif'"><img name=menu2 src=timetable.gif border=0></a><td>
+<td><p>&nbsp</p></td>
+<td><a href=menu3.html onMouseOver="menu3.src=menu3i.src;window.status='개설과목조회';return true" onMouseOut="menu3.src='classinfo.gif'"><img name=menu3 src=classinfo.gif border=0></a><td>
+<td><p>&nbsp</p></td>
+<td><a href=menu4.html onMouseOver="menu4.src=menu4i.src;window.status='신청현황조회';return true" onMouseOut="menu4.src='status.gif'"><img name=menu4 src=status.gif border=0></a><td>
+</tr>
+</table>
+</center>
+&nbsp
+<hr width=80%>
+&nbsp
+<center>
+<form action=register.cgi method=post>
+<input type=hidden name=service value=status>
+<table border=0 width=50%>
+<caption><font color=green>신청현황조회</caption>
+<tr><td>&nbsp</td></tr>
+<tr align=center>
+<td align=right>과목이름</td>
+<td align=center><input type=text name=class size=20 value=""></td>
+</tr>
+</table>
+<p>&nbsp</p>
+<input type=submit value="입력종료">
+<input type=reset value="입력취소">
+</form>
+</center>
+
+</body>
+</html>

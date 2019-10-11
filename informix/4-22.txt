@@ -1,0 +1,13 @@
+<html>
+<head><title>Enter Table Name</title></head>
+<body>
+<h2>Enter table name:</h2>
+<?mivar name=$TABLE><?/mivar>
+<?mivar>
+<form method=post action="$WEB_HOME">
+<input type=text name=table value=$TABLE>
+<input type=hidden name=MIval value=4-23>
+<input type=submit value="Count Rows"><hr>
+<?/mivar>
+</body>
+</html>

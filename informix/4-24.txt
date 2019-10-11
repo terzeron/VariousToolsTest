@@ -1,0 +1,28 @@
+<html>
+<head><title>Error Processing Page</title></head>
+<body>
+<?mivar name=$done>NO<?/mivar>
+<?miblock cond=$(EQ,$MI_ERRORCODE,-206)>
+  We regret to inform you that table:
+  <?mivar>$TABLE<?/mivar> does not exist.
+  <?mivar name=done>YES<?/mivar>
+<?/miblock>
+
+<?miblock cond=$(EQ,$MI_ERRORCODE,-201)>
+  You entered one or more blank spaces as a table name. Please go back and enter a table name.
+  <?mivar name=done>YES<?/mivar>
+<?/miblock>
+
+<?miblock cond=$(AND,$(EQ,$MI_ERRRORCODE,-937),$(EQ,$MI_ERRORSTATE,UWEB1))>
+  You have not specified a table. Please go back and enter a table name.
+  <?mivar name=done>YES<?/mivar>
+<?/miblock>
+
+<?miblock cond=$(EQ,$done,NO)>
+  You received an unexpected error:
+  <?mivar>$MI_ERRORMSG<?/mivar> <br>
+  Please contact your administrator.
+<?/miblock>
+<hr>
+</body>
+</html>

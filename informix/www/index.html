@@ -1,0 +1,66 @@
+<html>
+<head><title>수강신청</title></head>
+<body bgcolor=white>
+
+<script language=javascript>
+menu1 = new Image();
+menu2 = new Image();
+menu3 = new Image();
+menu4 = new Image();
+menu1i = new Image();
+menu2i = new Image();
+menu3i = new Image();
+menu4i = new Image();
+
+menu1.src = "register.gif";
+menu2.src = "timetable.gif";
+menu3.src = "classinfo.gif";
+menu4.src = "status.gif";
+menu1i.src = "register-i.gif";
+menu2i.src = "timetable-i.gif";
+menu3i.src = "classinfo-i.gif";
+menu4i.src = "status-i.gif";
+</script>
+
+<p>&nbsp</p>
+<center>
+<table border=0>
+<tr>
+<td><a href=menu1.html onMouseOver="menu1.src=menu1i.src;window.status='수강신청';return true" onMouseOut="menu1.src='register.gif'"><img name=menu1 src=register.gif border=0></a><td>
+<td><p>&nbsp</p></td>
+<td><a href=menu2.html onMouseOver="menu2.src=menu2i.src;window.status='시간표';return true" onMouseOut="menu2.src='timetable.gif'"><img name=menu2 src=timetable.gif border=0></a><td>
+<td><p>&nbsp</p></td>
+<td><a href=menu3.html onMouseOver="menu3.src=menu3i.src;window.status='개설과목조회';return true" onMouseOut="menu3.src='classinfo.gif'"><img name=menu3 src=classinfo.gif border=0></a><td>
+<td><p>&nbsp</p></td>
+<td><a href=menu4.html onMouseOver="menu4.src=menu4i.src;window.status='신청현황조회';return true" onMouseOut="menu4.src='status.gif'"><img name=menu4 src=status.gif border=0></a><td>
+</tr>
+</table>
+</center>
+&nbsp
+<hr width=80%>
+&nbsp
+
+<center>
+<table border=0 width=80%>
+<tr>
+<th colspan=2 bgcolor=#dddddd align=left>이 페이지는 98년 2학기 Database개론 두번째 프로젝트인 수강신청 DB를 웹서비스로 구현한 것입니다. 위의 4가지 메뉴 중에서 하나를 선택하면 페이지가 바뀝니다.</th>
+</tr>
+<tr>
+<td bgcolor=antiquewhite align=center>수강신청</td><td>학생의 이름과 학번을 입력하여 수강하고자 하는 과목을
+신청할 수 있습니다.</td>
+</tr>
+<tr>
+<td bgcolor=antiquewhite align=center>시간표</td><td>학생의 이름과 학번을 입력하여 자신의 시간표를 미리 볼
+수 있습니다.</td>
+</tr>
+<tr>
+<td bgcolor=antiquewhite align=center>개설과목조회</td><td>학과별, 대학별, 교수별, 개설과목 및 개설과목에 대한 상세한 정보를 얻을 수 있습니다.</td>
+</tr>
+<tr>
+<td bgcolor=antiquewhite align=center>신청현황조회</td><td>각 과목별 수강신청현황(학생수, 수강신청을 한 학생들의 정보, 수강신청을 한 학생들의 학과별 분표, 학년별 분포)를 확인할 수 있습니다.</td>
+</tr>
+</table>
+</center>
+
+</body>
+</html>

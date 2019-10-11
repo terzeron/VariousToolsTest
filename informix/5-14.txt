@@ -1,0 +1,31 @@
+<html>
+<head><title>Walking Window</title></head>
+<body>
+<!--- Initialization --->
+<?mivar name=WINSIZE default=3>$WINSIZE<?/mivar>
+<?mivar name=BEGIN default=0>$START<?/mivar>
+<!--- Definition of Ranges --->
+<?mivar name=BEGIN>$(IF,$(<,$BEGIN,0),0,$BEGIN)<?/mivar>
+<?mivar name=END>$(+,$BEGIN,$WINSIZE)<?/mivar>
+<!--- Execution --->
+<table border>
+<?misql sql="select tabname from systables where tabname like 'web%' order by tabname;">
+$(IF,$(AND,$(<,$BEGIN,$MI_CURRENTROW),$(>=,$END,$MI_CURRENTROW)),<tr> <td>$1</td> </tr>) 
+<?/misql>
+</table>
+<br>
+<!--- Set up next range --->
+<?miblock cond=$(<=,$WINSIZE,$BEGIN)>
+  <?mivar>
+  <a href=$WEB_HOME?MIval=5-14&START=$(-,$BEGIN,$WINSIZE)&WINSIZE=$WINSIZE>
+  Previous $WINSIZE Rows</a>
+  <?/mivar>
+<?/miblock>
+<?miblock cond=$(<,$END,$MI_ROWCOUNT)>
+  <?mivar>
+  <a href=$WEB_HOME?MIval=5-14&START=$END&WINSIZE=$WINSIZE>
+  Next $WINSIZE Rows</a>
+  <?/mivar>
+<?/miblock>
+</body>
+</html>

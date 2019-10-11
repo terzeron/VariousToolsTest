@@ -1,0 +1,10 @@
+<html>
+<head><title>Siomple Select 3</title></head>
+<body>
+<table border>
+<?misql sql="select * from staff;">
+<tr> {<td> $* </td>} </tr>
+<?/misql>
+</table>
+</body>
+</html>

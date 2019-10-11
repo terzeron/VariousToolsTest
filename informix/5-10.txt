@@ -1,0 +1,32 @@
+<html>
+<head><title>Select from Table</title></head>
+<body>
+<!--- Show columns of employees table in a form --->
+<!--- with multi-value check box. Turn checked --->
+<!--- columns into a comma-separated list. --->
+<?mivar name=$column_headers> <?/mivar>
+<hr>
+<strong>Select Columns from Employees Table</strong><br>
+<?mivar><form method=post action"$WEB_HOME"><?/mivar>
+<?misql sql="select a.colname, colno from syscolumns a, systables b where a.tabid = b.tabid and b.tabname = 'employees' order by colno;"> 
+<input type=checkbox name=column_list value=$1>$1<?/misql>
+<input type=hidden name=MIval value="5-10">
+<input type=submit value="Get Rows"><hr>
+</form>
+
+<!--- On the Second time through the form. --->
+<!--- retrieve  the selected columns from the --->
+<!--- database, display in table format. --->
+<?mivar cond=$(NXST,$column_list) name=$column_list><?/mivar>
+<?miblock cond=$(NOT,$(EQ,$column_list,))>
+  <?mivar name=$select_list>$(SEPARATE,$column_list,",")<?/mivar>
+  <?mivar name=$column_headers>$(REPLACE,$select_list,",",</th><th>)<?/mivar>
+  <table border>
+  <tr><th><?mivar>$column_headers<?/mivar></th></tr>
+  <?misql sql="select $select_list from employees order by 1;">
+  <tr>{<td>$*</td>}</tr>
+  <?/misql>
+  </table>
+<?/miblock>
+</body>
+</html>

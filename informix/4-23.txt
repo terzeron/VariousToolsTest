@@ -1,0 +1,13 @@
+<html>
+<head><title>Count Rows</title></head>
+<body>
+<!-- Count the number of rows in the table -->
+<!-- specified. call the error_handler page -->
+<!-- if an error occurs on this page. -->
+<?mierror tag=misql sql="select WebExplode(object, '') from webPages where ID='4-24';">$1<?/mierror>
+<?misql sql="select count(*) from $TABLE;">
+</b>$(FIX,$1)<br><?/misql>
+</body>
+</html>
+
+

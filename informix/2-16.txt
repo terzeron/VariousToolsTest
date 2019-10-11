@@ -1,0 +1,10 @@
+<html>
+<head><title>Logo Page</title></head>
+<body>
+<h3>Display APB Logos</h3>
+<hr>
+<?misql sql="select object from webImages where ID like 'apb_%';">
+<img src=$WEB_HOME?LO=$1&MItypeObj=image/gif><br>
+<?/misql>
+</body>
+</html>

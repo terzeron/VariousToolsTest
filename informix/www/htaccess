@@ -1,0 +1,7 @@
+AuthName sugang
+AuthType Basic
+AuthUserFile /temp/terzeron/public_html/informix/.htpasswd
+AuthGroupFile /dev/null
+<Limit GET POST>
+require valid-user
+</Limit>

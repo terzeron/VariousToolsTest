@@ -1,0 +1,342 @@
+\documentclass[a4paper]{report}
+\usepackage{hangul,fancyheadings,fancybox, amsmath}
+\begin{document}
+\title{\shadowbox{\bfseries \Huge 데이타베이스개론 과제 4}}
+\date{\LARGE 제출일 : \today}
+\author{\sffamily \LARGE 자연과학대학\\\\
+\sffamily \LARGE 전산과학과\\\\
+\sffamily \LARGE 9 5 3 2 3 - 1 0 0\\\\
+\sffamily \LARGE 조 영 일}
+\maketitle
+
+\pagestyle{fancy}
+\addtolength{\headwidth}{\marginparsep}
+\addtolength{\headwidth}{\marginparwidth}
+\setlength{\footrulewidth}{\headrulewidth}
+\lhead{DB Project II}
+\rfoot{\LaTeX}
+\cfoot{\rm\thepage}
+
+\section{개요}
+이번 프로젝트는 Informix DBMS를 이용하여 DB를 구축하고 ESQL로 수강신청 application을 제작한 것이다. WWW서비스를 이용하여 사용자와 server program 사이에서 CGI를 통해 정보를 주고받아 실행되도록 제작되었다.
+\section{제작 환경}
+Host Name : indra.snu.ac.kr\\
+System Model : SUN SPARCsystem10\\
+OS : Solaris 5.5.1\\
+Compiler : GCC 2.8.1\\
+\par
+
+\section{파일 구성}
+과제는 다음과 같이 구성되어 있다.
+\begin{enumerate}
+\item header file\\
+register.h : SQL의 에러메시지를 출력하는 함수인 sqlfatal를 define\\
+entity.h : tuple을 임시로 저장할 구조체 정의\\
+\item source file\\
+main.ec : 메인 procedure, 서비스별 함수 호출\\
+lecture.ec : 수강신청에 관련된 추가, 삭제, 수정\\
+timetable.ec : 시간표 제작\\
+classinfo.ec : 개설과목 정보 조회\\
+status.ec : 수강신청 현황 조회\\
+\item SQL file\\
+init.sql : 학생, 과목, 학과, 강의 table을 생성\\
+data.sql : 학생, 과목, 학과 table의 record 입력\\
+\item HTML file\\
+index.html : 서비스 홈페이지\\
+menu1.html : 수강신청 추가, 삭제, 수정 페이지\\
+menu2.html : 시간표 페이지\\
+menu3.html : 개설과목 정보 조회 페이지\\
+menu4.html : 수강신청 현황 조회 페이지\\
+\item CGI program\\
+register.cgi : CGI정보를 parsing하고 test.sh를 호출하는 Perl 프로그램\\
+test.sh : 환경변수를 설정하여 실제 CGI 프로그램인 register.cgi를 호출\\
+register.cgi : ESQL파일을 컴파일하여 생성된 실제 CGI 프로그램\\
+\item GIF file\\
+register.gif : ``수강신청''\\
+register-i.gif\\
+timetable.gif : ``시간표''\\
+timetable-i.gif\\
+classinfo.gif : ``개설과목조회''\\
+classinfo-i.gif\\
+status.gif : ``신청현황조회''\\
+status-i.gif\\
+\item etc\\
+makefile\\
+\end{enumerate}
+
+\section{실행 방법}
+WWW client프로그램(Netscape, Internet Explorer, ...)으로 http://indra.snu.ac.kr/informix에 접속한다. 처음에는 id와 passwd를 물어보기도 하는데, 각각 sugang, sugang1으로 입력한다.
+\par
+
+\section{Database의 design specification}
+\subsection{ER diagram}
+ER diagram은 문서마지막에 추가하였다.\\
+\subsection{table schema}
+\begin{enumerate}
+\item 학과 테이블
+\scriptsize
+\begin{verbatim}
+create table department (
+  name char(20) primary key, 학과이름
+  college char(20) not null); 소속 대학이름
+\end{verbatim}
+\normalsize
+\item 학생 테이블
+\scriptsize
+\begin{verbatim}
+create table student (
+  number char(20) primary key, 학번
+  name char(10) not null, 학생이름
+  class_year smallint not null, 학년
+  total_point smallint not null, 수강가능한 총 학점
+  present_point smallint not null, 현재 수강신청한 학점
+  dept_name char(20) references department(name)); 소속 학과이름
+\end{verbatim}
+\item 과목 테이블
+\normalsize
+\scriptsize
+\begin{verbatim}
+create table class (
+  name char(20) primary key, 과목이름
+  professor char(10) not null, 교수이름
+  point smallint not null, 학점
+  time set(smallint not null), 강의시간
+  max_capacity smallint not null, 수강정원
+  present_size smallint not null, 현재 신청인원
+  open smallint not null, 타과생 수강 여부
+  dept_name char(20) references department(name)); 개설 학과
+\end{verbatim}
+\normalsize
+\item 강의 테이블
+\normalsize
+\scriptsize
+\begin{verbatim}
+create table lecture (
+  student_number char(20) references student(number), 수강신청한 학생의 학번
+  class_name char(20) references class(name), 수강신청된 과목이름
+  primary key (student_number, class_name));
+\end{verbatim}
+\normalsize
+\end{enumerate}
+\subsection{Funtional dependency}
+학번 $\rightarrow$ 학과\\
+학번 $\rightarrow$ 대학\\
+학번 $\rightarrow$ 학과\\
+학과 $\rightarrow$ 대학\\
+대학 학년 $\rightarrow$ 수강가능학점\\
+\\
+이 FD들 중에서 DB table을 만들 때 사용된 것은 ``학과 $\rightarrow$ 대학'' 뿐이고, 나머지는 무시되었다. 특히 학번의 경우에는 FD가 존재하는 것은 알고 있지만, 학번을 조각내서 저장하는 비용이 더 큰 관계로 FD가 존재하지 않는 것으로 가정하였다. 대학,학년과 수강가능학점 사이에도 FD가 존재하지만 자료의 중복이 별로 없는 관계로 decompose하지 않았다.
+\par
+
+\section{프로그램의 design Specification}
+\subsection{주요 module}
+\begin{enumerate}
+\item main.ec\\
+main.ec에는 각각의 서비스를 담당하는 함수들을 호출하는 main()함수와 서비스 함수들이 공통으로 사용하는 함수인 show\_header()와 sqlfatal\_loc(), chop()을 구현되어 있다.\\
+\begin{enumerate}
+\item main()함수에서는 첫번째 argument를 보고 서비스를 결정하여 그 해당 함수를 호출한다. 여기서 호출되는 함수에는 수강신청 추가, 삭제, 수정을 담당하는 show\_lecture(), insert\_lecture(), delete\_lecture(), update\_lecture()와 시간표를 보여주는 timetable(), 개설과목에 대한 정보를 보여주는 classinfo(), 수강신청의 현황을 보여주는 status()가 호출된다.\\
+\item show\_header()함수는 각각의 서비스가 공유하는 메뉴의 HTML code와 Javascript코드를 출력해주는 일을 한다.\\
+\item sqlfatal\_loc()함수는 register.h에 sqlfatal()로 define되어 있는데 이 함수는 SQLCODE를 체크하여 에러인 경우 해당하는 에러메시지를 출력하고 종료한다.
+\scriptsize
+\begin{verbatim}
+int sqlfatal_loc(char *f, int ln)
+{
+  char msg[160];
+  
+  if (SQLCODE) { SQLCODE를 이용하여 에러 번호 출력
+    fprintf(stderr, "sqlcode %ld, isam %ld, file %s, line %d\n", SQLCODE, 
+      sqlca.sqlerrd[1], f, ln);
+
+    rgetmsg((short) sqlca.sqlcode, msg, sizeof(msg));
+    fprintf(stderr, "Sql: ");
+    fprintf(stderr, msg, sqlca.sqlerrm);
+    
+    if (sqlca.sqlerrd[1]) { 에러메시지 출력
+      rgetmsg((short) (sqlca.sqlerrd[1]), msg, sizeof(msg)); 
+      fprintf(stderr, "%s", msg);
+    }
+    exit(1); 종료
+  }
+}
+\end{verbatim}
+\normalsize
+\item chop()함수는 record의 어떤 field를 문자열 타입의 host variable에 저장했을 때 실제 자료 뒤쪽에 붙는 white space들을 제거하는 함수이다. 이 white space들을 제거하지 않으면 CGI프로그램으로 다시 넘겨질 때 값을 제대로 인식하지 못하는 문제점이 있다.
+\scriptsize
+\begin{verbatim}
+int chop(char *string)
+{
+  int i;
+
+  if (string[0] == '\0' || string == NULL)
+    return -1;
+
+  for (i = 0; i < strlen(string); i++) {
+    if (isspace(string[i])) {
+      string[i] = '\0'; 문자열 field에 공백이 나오면 잘라버림
+      break;
+    }
+  }
+  
+  return 0;
+}
+\end{verbatim}
+\normalsize
+\end{enumerate}
+\item lecture.ec\\
+lecture.ec에는 수강신청에 관련된 show\_lecture(), insert\_lecture(), delete\_lecture(), update\_lecture(), HTML코드를 마무리하는 show\_tail(), ESQL의 커서를 관리하는 open\_cur(), fetch\_cur(), close\_cur()등이 구현되어 있다.
+\begin{enumerate}
+\item show\_lecture()함수는 어떤 학생의 수강신청 상태를 보여준다.
+\item insert\_lecture()함수는 새로운 과목을 추가한다. 학점이 초과되지 않고 수강정원을 넘지 않으며 타과생 수강불가 과목은 신청되지 않도록 체크한다. 수강신청이 되면 그 과목의 현재 수강인원을 한 명 늘리고 그 학생의 현재 수강학점을 그 과목 학점만큼 높인다.
+\scriptsize
+\begin{verbatim}
+  EXEC SQL begin work; 트랜잭션의 처음을 지정한다.
+  EXEC SQL insert into lecture values (:student\_number, :class\_name);
+  if (SQLCODE)
+    EXEC SQL rollback work; 실패하면 rollback을 한다.
+  
+  EXEC SQL update student set (present\_point) = (present\_point+:class.point)
+    where number = :student\_number;
+  if (SQLCODE)
+    EXEC SQL rollback work;
+  student.present\_point += class.point; 학생의 현재 수강학점을 높인다.
+   
+  EXEC SQL update class set (present\_size) = (present\_size + 1) 
+    where name = :class.name;
+  if (SQLCODE)
+    EXEC SQL rollback work;
+  class.present\_size ++; 과목의 현재 수강인원을 한 명 늘인다.
+  EXEC SQL commit work; 트랜잭션의 끝을 지정한다.
+\end{verbatim}
+\normalsize
+\item delete\_lecture()함수는 이미 신청되어 있는 과목을 삭제하고 그 과목의 현재 수강인원을 한 명 줄이고, 학생의 현재 수강학점을 줄인다.
+\scriptsize
+\begin{verbatim}
+  EXEC SQL begin work; 트랜잭션의 처음
+  EXEC SQL delete from lecture where student\_number = :student\_number 
+    and class\_name = :class\_name;
+  if (SQLCODE) 
+    EXEC SQL rollback work; 실패하면 rollback
+        
+  EXEC SQL update student set (present\_point) = (present\_point-:class.point)
+     where number = :student\_number;
+  if (SQLCODE) 
+    EXEC SQL rollback work;
+  student.present\_point -= class.point; 학생의 현재 수강학점을 줄인다.
+          
+  EXEC SQL update class set (present\_size) = (present\_size - 1) 
+    where name = :class.name;
+  if (SQLCODE)
+    EXEC SQL rollback work;
+  class.present\_size --; 과목의 현재 수강인원을 한 명 늘인다.
+  EXEC SQL commit work; 트랜잭션을 수행
+\end{verbatim}
+\normalsize
+\item update\_lecture()함수는 이미 신청되어 있는 과목을 새로운 과목으로 바꾼다.\\
+\item show\_tail()함수는 cursor를 이용하여 과목 정보를 실제로 출력하는 작업을 한다. 현재 신청되어 있는 과목을 출력하고 여기에 관련해 과목을 추가, 삭제, 수정하는데 필요한 CGI 정보를 출력한다. fetch\_cur(), close\_cur()를 여기서 호출한다.\\
+\item open\_cur()함수는 cursor를 정의하고 open한다. 여러 함수가 공유하므로 이미 열려 있는지 아닌지를 static variable을 가지고 체크한다.
+\scriptsize
+\begin{verbatim}
+int open_cur(student_number) 
+     EXEC SQL begin declare section;
+     parameter char student_number[];
+     EXEC SQL end declare section;
+{
+  EXEC SQL declare mycursor cursor for 
+    select class.name, class.professor, class.point, class.time, class.max_capac
+ity, class.present_size, class.open, class.dept_name from lecture, class, studen
+t where lecture.class_name = class.name and lecture.student_number = student.num
+ber and student.number = :student_number;
+  if (open)
+    close_cur();
+  
+  EXEC SQL open mycursor;
+  sqlfatal();
+
+  open = 1;
+  return 1;
+}
+\end{verbatim}
+\normalsize
+\item fetch\_cur()함수는 cursor를 옮겨가면서 해당 record를 DB로부터 꺼내어 정보를 출력하는 작업을 한다.
+\scriptsize
+\begin{verbatim}
+int fetch_cur(class)
+     EXEC SQL begin declare section;
+     parameter class_t *class;
+     EXEC SQL end declare section;
+{
+  EXEC SQL fetch next mycursor into :class->name, :class->professor, :class->poi
+nt, :class->time, :class->max_capacity, :class->present_size, :class->open, :cla
+ss->dept_name;
+  
+  if (SQLCODE < 0)
+    sqlfatal();
+  if (SQLCODE == SQLNOTFOUND) 
+    return -1;
+  return 0;
+}
+\end{verbatim}
+\normalsize
+\item close\_cur()함수는 cursor를 닫고 free하는 일을 한다.
+\scriptsize
+\begin{verbatim}
+void close_cur(void)
+{
+  EXEC SQL close mycursor;
+  EXEC SQL free mycursor;
+  sqlfatal();
+  open = 0;
+}
+\end{verbatim}
+\normalsize
+\end{enumerate}
+\item timetable.ec\\
+timetable.ec에는 시간표를 출력하는 timetable()함수와 수업시간이 겹치는지 검사하는 check\_timetable()함수, DB에 입력되어 있는 수업시간의 자료값을 구문분석해주는 lexer()함수가 구현되어 있다.
+\begin{enumerate}
+\item timetable()함수는 수강신청 자료를 꺼내어 각 과목의 시간정보를 lexer()함수를 이용해 얻어와서 table형태의 시간표를 출력하는 작업을 한다.\\
+\item check\_timetable()함수는 insert\_lecture()함수와 update\_lecture()함수에서 호출되는 함수로서, 현재 신청되어 있는 과목들과 이번에 새로 추가하려는 과목을 비교하여 시간이 중복되는가를 알아보는 함수이다.\\
+\item lexer()함수는 ``SET{101, 102, 305}''의 형태로 저장되어 있는 시간정보를 쪼개어 1, 01, 1, 02, 3, 05라는 6개의 정수형 자료로 변환한다. 홀수번째의 1 또는 3은 월요일과 수요일을 의미하며 01, 02, 05는 1교시, 2교시, 5교시를 의미한다. 정수형 자료로 입력한 이유는 2차원 배열에서 index로 사용하기 편리하기 때문이다.\\
+\end{enumerate}
+\item classinfo.ec\\
+classinfo.ec에는 classinfo(), show\_head(), show\_body(), show\_end()함수가 있는데, classinfo()에서는 show\_head(), show\_body(), show\_end()를 호출하여 개설되어 있는 과목의 정보를 출력한다.
+\item status.ec\\
+status.ec에는 수강신청 현황을 출력하는 status()함수와 신청된 수강정보 중에서 대학, 학과, 학년 정보를 모으는 add\_college(), add\_dept(), add\_year()함수가 구현되어 있다.
+\begin{enumerate}
+\item status()함수는 우선 신청되어 있는 수강정보를 하나씩 꺼내면서 그 정보에 기록된 대학, 학과, 학년 정보를 add\_college(), add\_dept(), add\_year()함수를 호출하여 새로운 정보이면 추가한다. 모아진 대학, 학과, 학년 정보에 따라 다시 수강정보를 꺼내면서 해당 수강인원 분포를 출력한다.\\
+\item add\_college()함수는 새로운 대학정보가 넘겨져 들어오면 추가하고 기존 정보와 같은 대학이름이 넘겨져 들어오면 무시한다. 이런 식으로 unique하게 대학 이름을 모을 수 있다. 이 정보는 status()함수에서 대학별 수강인원 분포를 알아볼 때 사용된다. add\_dept(), add\_year()함수도 마찬가지 일을 한다.\\
+\end{enumerate}
+\end{enumerate}
+\par
+
+\subsection {기능적 특징}
+\begin{enumerate}
+\item 각 서비스의 연동\\
+각 서비스는 링크나 FORM으로 연결되어 있어서 학생이 수강신청을 하다가 자신의 시간표를 확인할 수도 있고, 거꾸로 시간표를 보다가 수강신청을 할 수도 있다. 또는 수강신청을 하거나 시간표를 보다가 자신이 신청한 과목의 정보를 볼 수도 있다. 개설된 과목의 정보를 보다가 그 과목과 관련된 수강신청 현황을 확인할 수도 있으며 여기서 다시 그 과목을 수강신청한 학생의 수강신청 정보를 볼 수도 있다.
+\item CGI 프로그램의 기능 분배\\
+이 수강신청 서비스의 CGI는 ``HTML 페이지--Perl 프로그램--C shell script--ESQL/C 프로그램''과 같은 구조를 가지고 있다. Perl 프로그램은 CGI정보를 parsing하고 C shell script는 DB를 사용하기 위한 환경변수를 설정하고 ESQL/C 프로그램은 서비스의 결과를 출력한다. 이렇게 기능을 분배하고 있기 때문에 Web application이지만 ESQL/C 프로그램만 실행시켜 원하는 서비스를 할 수 있기 때문에 Text기반으로도 porting하기가 쉽다.(물론 이번 프로젝트에서는 구현되지 않았다.) 실제로 수강신청한 과목을 삭제하는 작업은 ESQL/C 프로그램인 register를 다음과 같이 실행함으로써 가능하다.
+\begin{verbatim}
+% register 6 94406-009 미적분학
+\end{verbatim}
+6번은 삭제 기능을 의미하며 ``94406-009'' ``송만식'' 학생의 ``미적분학'' 수강신청을 삭제하는 작업을 한다. 마찬가지로 ``미적분학'' 과목을 ``프로그래밍이론'' 과목으로 수정하는 작업은 다음과 같이 실행가능하다.
+\begin{verbatim}
+% register 7 94406-009 미적분학 프로그래밍이론
+\end{verbatim}
+C shell script에서 환경 변수를 지정하여 출력결과에 HTML tag를 보일 것인지, 아니면 Text출력을 할 것인지를 결정할 수 있으므로 Text프로그램으로 porting이 용이할 것으로 예상된다.
+\end{enumerate}
+\par
+
+\section{테스트 결과 및 토의}
+CGI로 구현되어 있어서 Text기반 application보다 실행속도가 떨어지는 것이 흠이지만 수강신청 서비스 수준에는 그다지 문제가 없을 것으로 판단된다.
+\par 
+
+\section{제작자(feedback)}
+terzeron@brahma.snu.ac.kr
+\par
+
+\end{document}
+
+
+
+
+
+

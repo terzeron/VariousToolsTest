@@ -1,0 +1,23 @@
+<html>
+<head><title>Uploda</title>
+
+<body>
+<form enctype=multipart/form-data method=post action=<?mivar>$WEB_HOME<?/mivar>>
+Minput type=hidden name=MIval value=upload_test>
+<input type=hidden name=action value=on>
+<table><tr> <td>Name:</td>
+<td><input name=name size=50 type=text></td></tr>
+<tr> <td>File: </td>
+<td><input name=upload size=50 type=file></td></tr>
+</table>
+<hr>
+<input type=submit value="Upload File">
+</form>
+<?miblock cond=$(XST,$action)><hr>
+<?mivar>Type:$upload_type<br>
+Name: $upload_name<br>
+Dir: $upload<br>
+<?/mivar>
+<?/miblock>
+</body>
+</html>

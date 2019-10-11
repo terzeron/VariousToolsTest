@@ -1,0 +1,13 @@
+<html>
+<head><title>Select from Table</title></head>
+<body>
+<form method=post action=<?mivar>$WEB_HOME<?/mivar>>
+<?mivar name=$table_name><?/mivar>
+Select from table: <HR>
+<?mivar>
+<input type=text size=40 name=table_name value=$table_name><?/mivar>
+<input type=submit value=Select>
+<input type=hidden name=MIval value=2-12>
+</form>
+</body>
+</html>

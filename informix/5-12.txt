@@ -1,0 +1,15 @@
+<html>
+<head><title>Conditional Output</title></head>
+<body>
+<b>Display employee names by department: </b>
+<?mivar name=LAST><?/mivar>
+<table border=1>
+<?misql sql="select b.name, a.first_name, a.last_name from employees a, departments b where a.department = b.name order by b.name, a.last_name;">
+<r>
+<td>$(IF,$(NE,$1,$LAST),$1)</td>
+<td> $2 $3</td> $(SETVAR,$LAST,$1)
+</tr>
+<?/misql>
+</table>
+</body>
+</html>

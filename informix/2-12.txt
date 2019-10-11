@@ -1,0 +1,12 @@
+<html>
+<head><title>Display Table Data</title></head>
+<body>
+<table border>
+<tr>
+<?misql sql="select a.colname, colno from syscolumns a, systables b where a.tabid = b.tabid and b.tabname = trim('$table_name') order by colno;">
+<th>$1</th><?/misql></tr>
+<?misql sql="select * from $table_name;">
+<tr> { <td>$*</td> } </tr><?/misql>
+</table>
+</body>
+</html>

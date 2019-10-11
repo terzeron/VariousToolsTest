@@ -1,0 +1,10 @@
+<html>
+<head><title>conditional Display</title></head>
+<body>
+<?mivar cond=$(NXST,$VAR1) NAME=$VAR1>0<?/mivar>
+This is always displayed.<br>
+<?miblock cond=$VAR1> This is conditionally displayed if VAR1 is nonzero.<br> <b>The value of VAR1 is: <?mivar>$VAR1<?/mivar></b><br>
+<?/miblock>
+This is always displayed.
+</body>
+</html>

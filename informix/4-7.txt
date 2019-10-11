@@ -1,0 +1,7 @@
+<html>
+<head><title>Simple Select 1</title></head>
+<body><?misql sql="select first_name, last_name, title from staff;">
+<b>$1 $2</b>, $3<br><?/misql>
+</body>
+</html>
+

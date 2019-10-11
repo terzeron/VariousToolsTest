@@ -1,0 +1,79 @@
+<html>
+<head><title>수강신청</title></head>
+<body bgcolor=white>
+
+<script language=javascript>
+menu1 = new Image();
+menu2 = new Image();
+menu3 = new Image();
+menu4 = new Image();
+menu1i = new Image();
+menu2i = new Image();
+menu3i = new Image();
+menu4i = new Image();
+
+menu1.src = "register.gif";
+menu2.src = "timetable.gif";
+menu3.src = "classinfo.gif";
+menu4.src = "status.gif";
+menu1i.src = "register-i.gif";
+menu2i.src = "timetable-i.gif";
+menu3i.src = "classinfo-i.gif";
+menu4i.src = "status-i.gif";
+</script>
+
+<p>&nbsp</p>
+<center>
+<table border=0>
+<tr>
+<td><a href=menu1.html onMouseOver="menu1.src=menu1i.src;window.status='수강신청';return true" onMouseOut="menu1.src='register.gif'"><img name=menu1 src=register.gif border=0></a><td>
+<td><p>&nbsp</p></td>
+<td><a href=menu2.html onMouseOver="menu2.src=menu2i.src;window.status='시간표';return true" onMouseOut="menu2.src='timetable.gif'"><img name=menu2 src=timetable.gif border=0></a><td>
+<td><p>&nbsp</p></td>
+<td><a href=menu3.html onMouseOver="menu3.src=menu3i.src;window.status='개설과목조회';return true" onMouseOut="menu3.src='classinfo.gif'"><img name=menu3 src=classinfo.gif border=0></a><td>
+<td><p>&nbsp</p></td>
+<td><a href=menu4.html onMouseOver="menu4.src=menu4i.src;window.status='신청현황조회';return true" onMouseOut="menu4.src='status.gif'"><img name=menu4 src=status.gif border=0></a><td>
+</tr>
+</table>
+</center>
+&nbsp
+<hr width=80%>
+&nbsp
+<center>
+<form action=register.cgi method=post>
+<input type=hidden name=service value=classinfo>
+<table border=0>
+<caption><font color=green>개설과목조회</caption>
+<tr><td>&nbsp</td></tr>
+<tr align=center>
+<td cellpadding=0 align=center><input type=radio name=select value=college> 대학명으로 선택</td>
+<td cellpadding=0 align=center><input type=text name=college size=14 value=""></td>
+<td width=10>&nbsp</td>
+</tr>
+<tr align=center>
+<td cellpadding=0 align=center><input type=radio name=select value=dept> 학과명으로 선택</td>
+<td cellpadding=0 align=center><input type=text name=dept size=14 value=""></td>
+<td width=10>&nbsp</td>
+</tr>
+<tr align=center>
+<td cellpadding=0 align=center><input type=radio name=select value=prof> 교수명으로 선택</td>
+<td cellpadding=0 align=center><input type=text name=prof size=14 value=""></td>
+<td width=10>&nbsp</td>
+</tr>
+<tr align=center>
+<td cellpadding=0 align=center><input type=radio name=select value=class> 과목명으로 선택</td>
+<td cellpadding=0 align=center><input type=text name=class size=14 value=""></td>
+<td width=10>&nbsp</td>
+</tr>
+<tr>
+<td cellpadding=0 align=left colspan=2><input type=radio name=select value=all checked> 모든 과목 정보</td>
+</tr>
+</table>
+<p>&nbsp</p>
+<input type=submit value="입력종료">
+<input type=reset value="입력취소">
+</form>
+</center>
+
+</body>
+</html>

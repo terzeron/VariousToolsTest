@@ -1,0 +1,6 @@
+<html>
+<head><title>Display a Variable</title></head>
+<body>
+<hr>The value of the HTTP_USER_AGENT environment variable is <?MIVAR>$HTTP_USER_AGENT<?/MIVAR><HR>
+</body>
+</html>

@@ -1,0 +1,11 @@
+<html>
+<head><title>Simple Select 2</title></head>
+<body>
+<table border>
+<?misql sql="select first_name, last_name, title from staff;">
+<tr> <td> $1 $2 </td><td> $1[2] $2[2] </td> </tr>
+<?/misql>
+</table>
+</body>
+</html>
+

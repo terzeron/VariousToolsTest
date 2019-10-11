@@ -1,0 +1,7 @@
+<html>
+<head><title>WebRelease Example</title></head>
+<body>
+<b>The current version of the Web DataBlade modules is:</b>
+<?misql sql="execute function WebRelease();">$1<?/misql>
+</body>
+</html>

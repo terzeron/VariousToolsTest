@@ -1,0 +1,188 @@
+#**************************************************************************
+#
+#			   INFORMIX SOFTWARE, INC.
+#
+#  Title:	onconfig.std
+#  Description: INFORMIX-Universal Server Configuration Parameters
+#
+#**************************************************************************
+
+# Root Dbspace Configuration
+
+ROOTNAME        rootdbs         # Root dbspace name
+ROOTPATH        /usr2/informix/DbSpaces/root_chk 
+                                # Path for device containing root dbspace
+ROOTOFFSET      0               # Offset of root dbspace into device (Kbytes)
+ROOTSIZE        50000           # Size of root dbspace (Kbytes)
+
+# Disk Mirroring Configuration Parameters
+
+MIRROR          0               # Mirroring flag (Yes = 1, No = 0)
+MIRRORPATH                      # Path for device containing mirrored root
+MIRROROFFSET    0               # Offset into mirrored device (Kbytes)
+
+# Physical Log Configuration
+
+PHYSDBS         rootdbs         # Location (dbspace) of physical log
+PHYSFILE        4000            # Physical log file size (Kbytes)
+
+# Logical Log Configuration
+
+LOGFILES        6               # Number of logical log files
+LOGSIZE         2000            # Logical log size (Kbytes)
+
+# Diagnostics 
+
+MSGPATH         /usr2/informix/online.log # System message log file path
+CONSOLE         /dev/console    # System console message path
+ALARMPROGRAM    /usr2/informix/etc/log_full.sh # Alarm program path
+
+# System Archive Tape Device
+
+TAPEDEV         /dev/null       # Tape device path	
+TAPEBLK         16              # Tape block size (Kbytes)
+TAPESIZE        10240           # Maximum amount of data to put on tape (Kbytes)
+
+# Log Archive Tape Device
+
+LTAPEDEV        /dev/null       # Log tape device path
+LTAPEBLK        16              # Log tape block size (Kbytes)
+LTAPESIZE       10240           # Max amount of data to put on log tape (Kbytes)
+
+# Optical
+
+STAGEBLOB                       # INFORMIX-OnLine/Universal Server staging area 
+
+# System Configuration
+
+SERVERNUM       0               # Unique id corresponding to a OnLine instance
+DBSERVERNAME    dblab_iust      # Name of default database server
+DBSERVERALIASES dblab_iuss      # List of alternate dbservernames
+DEADLOCK_TIMEOUT 60              # Max time to wait of lock in distributed env.
+RESIDENT        0               # Forced residency flag (Yes = 1, No = 0)
+
+MULTIPROCESSOR  0               # 0 for single-processor, 1 for multi-processor
+NUMCPUVPS       1               # Number of user (cpu) vps
+SINGLE_CPU_VP   0               # If non-zero, limit number of cpu vps to one
+
+NOAGE           0               # Process aging
+AFF_SPROC       0               # Affinity start processor
+AFF_NPROCS      0               # Affinity number of processors
+
+# Shared Memory Parameters
+
+LOCKS           2000            # Maximum number of locks
+BUFFERS         5000            # Maximum number of shared buffers
+NUMAIOVPS       1               # Number of IO vps
+PHYSBUFF        32              # Physical log buffer size (Kbytes)
+LOGBUFF         32              # Logical log buffer size (Kbytes)
+LOGSMAX         10              # Maximum number of logical log files
+CLEANERS        1               # Number of buffer cleaner processes
+SHMBASE         0xa000000         # Shared memory base address
+SHMVIRTSIZE     8000            # initial virtual shared memory segment size
+SHMADD          8192            # Size of new shared memory segments (Kbytes)
+SHMTOTAL        0               # Total shared memory (Kbytes). 0=>unlimited
+CKPTINTVL       300             # Check point interval (in sec)
+LRUS            8               # Number of LRU queues
+LRU_MAX_DIRTY   60              # LRU percent dirty begin cleaning limit
+LRU_MIN_DIRTY   50              # LRU percent dirty end cleaning limit
+LTXHWM          50              # Long transaction high water mark percentage
+LTXEHWM         60              # Long transaction high water mark (exclusive)
+TXTIMEOUT       0x12c             # Transaction timeout (in sec)
+STACKSIZE       32              # Stack size (Kbytes)
+
+# System Page Size
+# BUFFSIZE - OnLine no longer supports this configuration parameter.
+#            To determine the page size used by OnLine on your platform
+#            see the last line of output from the command, 'onstat -b'.
+
+
+# Recovery Variables
+# OFF_RECVRY_THREADS:
+# Number of parallel worker threads during fast recovery or an offline restore.
+# ON_RECVRY_THREADS:
+# Number of parallel worker threads during an online restore.
+
+OFF_RECVRY_THREADS 10              # Default number of offline worker threads
+ON_RECVRY_THREADS 1               # Default number of online worker threads
+
+# Data Replication Variables
+# DRAUTO: 0 manual, 1 retain type, 2 reverse type
+DRAUTO          0               # DR automatic switchover
+DRINTERVAL      30              # DR max time between DR buffer flushes (in sec)
+DRTIMEOUT       30              # DR network timeout (in sec)
+DRLOSTFOUND     /usr2/informix/lost&found # DR lost+found file path
+
+# Backup/Restore variables
+BAR_ACT_LOG     /tmp/bar_act.log 
+BAR_MAX_BACKUP  0               
+BAR_RETRY       1               
+BAR_NB_XPORT_COUNT 10              
+BAR_XFER_BUF_SIZE 31              
+
+# Read Ahead Variables
+RA_PAGES                        # Number of pages to attempt to read ahead
+RA_THRESHOLD                    # Number of pages left before next group
+
+# DBSPACETEMP:
+# OnLine equivalent of DBTEMP for SE. This is the list of dbspaces
+# that the OnLine SQL Engine will use to create temp tables etc.
+# If specified it must be a colon separated list of dbspaces that exist
+# when the OnLine system is brought online.  If not specified, or if
+# all dbspaces specified are invalid, various ad hoc queries will create
+# temporary files in /tmp instead.
+
+DBSPACETEMP                     # Default temp dbspaces
+
+# DUMP*:
+# The following parameters control the type of diagnostics information which
+# is preserved when an unanticipated error condition (assertion failure) occurs 
+# during OnLine operations.  
+# For DUMPSHMEM, DUMPGCORE and DUMPCORE 1 means Yes, 0 means No.
+
+DUMPDIR         /tmp            # Preserve diagnostics in this directory
+DUMPSHMEM       0               # Dump a copy of shared memory
+DUMPGCORE       0               # Dump a core image using 'gcore'
+DUMPCORE        0               # Dump a core image (Warning:this aborts OnLine)
+DUMPCNT         1               # Number of shared memory or gcore dumps for 
+				# a single user's session
+
+FILLFACTOR      90              # Fill factor for building indexes
+
+# method for OnLine to use when determining current time
+USEOSTIME       1               # 0: use internal time(fast), 1: get time from OS(slow)
+
+# Parallel Database Queries (pdq)
+MAX_PDQPRIORITY 100             # Maximum allowed pdqpriority
+DS_MAX_QUERIES                  # Maximum number of decision support queries 
+DS_TOTAL_MEMORY                 # Decision support memory (Kbytes) 
+DS_MAX_SCANS    1048576         # Maximum number of decision support scans	
+DATASKIP        off             # List of dbspaces to skip
+
+# OPTCOMPIND
+# 0 => Nested loop joins will be preferred (where 
+#      possible) over sortmerge joins and hash joins. 
+# 1 => If the transaction isolation mode is not  
+#      "repeatable read", optimizer behaves as in (2) 
+#      below.  Otherwise it behaves as in (0) above. 
+# 2 => Use costs regardless of the transaction isolation
+#      mode.  Nested loop joins are not necessarily  
+#      preferred.  Optimizer bases its decision purely  
+#      on costs. 
+OPTCOMPIND      2               # To hint the optimizer
+
+ONDBSPACEDOWN   2               # Dbspace down option: 0 = CONTINUE, 1 = ABORT, 2 = WAIT
+LBU_PRESERVE    0               # Preserve last log for log backup 
+OPCACHEMAX      0               # Maximum optical cache size (Kbytes)
+
+# HETERO_COMMIT (Gateway participation in distributed transactions)
+# 1 => Heterogeneous Commit is enabled
+# 0 (or any other value) => Heterogeneous Commit is disabled
+HETERO_COMMIT   0               
+
+SBSPACENAME     sbs1            # Default smartblob space name
+
+JVPON           0               # Boot the Java vp (Yes = 1, No = 0 or anything but 1)
+
+BLOCKTIMEOUT    3600            # Default timeout for system block
+SYSALARMPROGRAM /usr2/informix/etc/evidence.sh # System Alarm program path

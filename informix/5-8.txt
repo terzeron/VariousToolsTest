@@ -1,0 +1,8 @@
+<html>
+<head><title>Adding Two Variables</title></head>
+<body>
+<?mivar name=NUMA>10<?/mivar>
+<?mivar name=NUMB>20<?/mivar>
+<?mivar><b>The sum of $NUMA and $NUMB is</b> $(+,$NUMA,$NUMB).<?/mivar>
+</body>
+</html>

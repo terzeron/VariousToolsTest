@@ -1,0 +1,33 @@
+<html>
+<head><title> Checkboxlist Example </title></head>
+<body>
+<?miblock cond=$(XST,$action)>
+  <!--- Block to perform update when submitting form --->
+  <?mivar name=where SEPARATE="', '">$names<?/mivar>
+  <?mivar name=sql_statement1>update employees set onsite='t' where first_name in ('$where');<?/mivar>
+  <?misql sql="$sql_statement1"><?/misql>
+  <?mivar name=sql_statement2>update employees set onsite='f' where first_name not in ('$where');<?/mivar>
+  <?misql sql="$sql_statement2"><?/misql>
+<?/miblock>
+<h3> Employees that work onsite: </h3>
+<form method=post action=<?mivar>$WEB_HOME<?/mivar>>
+<!--- Hidden Fields ---!>
+<input type=hidden name=action value=on>
+<input type=hidden name=MIval value=6-5>
+<!--- SQL to generate check box list ---!>
+<?checkboxlist name=names sql="select first_name from employees order by first_name" checked="select first_name from employees where onsite='t'">
+<p>
+Control-click names to toggle on and off. Then choose Submit.
+<p>
+<input type=submit value="Submit">
+<input type=reset value="Reset">
+</form>
+<hr>
+<?mivar cond=$(XST,$action)>
+  SQL executed: <i>$sql_statement2</i><?/mivar>
+<p>
+<?mivar cond=$(XST,$action)>
+  SQL executed: <i>$sql_statement1</i><?/mivar>
+<p>
+</body>
+</html>

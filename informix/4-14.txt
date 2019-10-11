@@ -1,0 +1,1 @@
+<?misql maxrows=2 sql="select * from staff;"> { $* } <br> <?/misql>

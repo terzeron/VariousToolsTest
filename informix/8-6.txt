@@ -1,0 +1,17 @@
+<html>
+<head><title>Has the user been here before?</title></head>
+<body>
+<h2>Has the user been here before?</h2><hr>
+<!--- See if the flag variable has been  set --->
+<?miblock cond=$(XST,$flag)>
+  <!--- Flag variable has been here before!</b>
+  <b>Welcome Back! You have been here befoer!</b>
+<?/miblock>
+<?miblock cond=$(NXST,$flag)>
+  <!--- Flag variable has NOT been set --->
+  <!--- Set a cookie
+  <?mivar>$(HTTPHEADER,set-cookie,flag=yes)<?/mivar>
+  <b>This is the first time you have been to this page!</b>
+<?/miblock>
+</body>
+</html>

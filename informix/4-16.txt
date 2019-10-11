@@ -1,0 +1,7 @@
+<html>
+<head><title>Variable Assignment 2</title></head>
+<body>
+<?mivar name=$TITLE default="Sir or Madam"> $INPUT_TITLE <?/mivar>
+<?mivar> Dear $TITLE: <br> You are a sweepstake winner! <?/mivar>
+</body>
+</html>

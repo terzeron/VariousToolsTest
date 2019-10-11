@@ -1,0 +1,13 @@
+<html>
+<head><title>Siomple Select 4</title></head>
+<body>
+<table border>
+<?misql sql="select * from staff;">
+<tr> {<td> $* </td>} </tr>
+<?/misql>
+</table>
+<hr>
+<b>This query retrieved:</b>
+<?mivar> $MI_ROWCOUNT <?/mivar> <b> rows </b>
+</body>
+</html>

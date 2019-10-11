@@ -1,0 +1,11 @@
+<html>
+<head><title>Siomple Select 5</title></head>
+<body>
+<table border>
+<?mivar name=$MI_NOVALUE> <?/mivar>
+<?mivar name=$MI_NULL> <?/mivar>
+<?misql sql="select first_name, last_name from celebrities;">
+<tr> <td> $1 $2 </td><td> $1[2] $2[2] </td> </tr> <?/misql>
+</table>
+</body>
+</html>

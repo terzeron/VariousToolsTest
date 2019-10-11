@@ -1,0 +1,8 @@
+<html>
+<head><title>Variable Assignment 1</title></head>
+<body>
+<?mivar name=$TITLE>Enterpreneur <?/mivar>
+<?mivar name=$SALUTATION> Dear $title: <?/mivar>
+<?mivar>$SALUTATION <BR> You are a sweepstakes winner!<?/mivar>
+</body>
+</html>

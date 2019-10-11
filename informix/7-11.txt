@@ -1,0 +1,12 @@
+<html>
+<head><title>WebUnHTML Example</title></head>
+<body>
+To display the horizontal rule HTML tag: <br>
+<?misql sql="execute function WebUnHTML('<HR>');">$1<?/misql>
+<br>
+you can use the <b>WebUnHTML</b> function. <br> <br>
+Otherwise, the tag will be interpreted, and a horizontal rule:
+<hr>
+will be displayed.
+</body>
+</html>
